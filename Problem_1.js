@@ -65,14 +65,31 @@ function problem2(arg) {
   return sum;
 }
 
-const result = problem2(4000000);
-// const sort_result = Array.from(new Set(result));
-// console.log(sort_result);
-// let sum = 0;
-// for (let ele of sort_result) {
-//   if (ele % 2 === 0) {
-//     sum = sum + ele;
-//   }
-// }
+/**
+ * 가장 큰 소인수 구하기
+ * 어떤 수를 소수의 곱으로만 나타내는 것을 소인수분해라 하고, 이 소수들을 그 수의 소인수라고 합니다.
+ * 예를 들면 13195의 소인수는 5, 7, 13, 29 입니다.
+ * 600851475143의 소인수 중에서 가장 큰 수를 구하세요.
+ *
+ * 풀이
+ * 소수는 1을 제외한 약수로 1과 자기 자신만을 갖는 수를 의미.
+ * 초기 값과 i로 나누어 떨어질 경우 해당값을 저장 후
+ * 초기 값을 나누어진 값으로 변환.
+ * 위의 과정을 계속 진행 후 for문이 끝나게 되면 가장 큰 수가 저장되어 있기 때문에
+ * 결과 도출
+ */
+function problem3(arg) {
+  let arr = 0;
+  for (let i = 3; i <= arg; i++) {
+    if (arg % i === 0) {
+      arr = i;
+      arg /= i;
+    }
+  }
+  return arr;
+}
+
+// const result = problem2(4000000);
+const result = problem3(600851475143);
 
 console.log(result);
