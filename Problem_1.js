@@ -466,7 +466,7 @@ function problem11(input) {
 
   // 배열의 인자들을 곱할 함수
   const multiple = (arr) => arr.reduce((p, c) => {
-    return p * (c ? c : 1);
+    return p * c;
   });
 
   // 반복문을 두개를 돌려 2차원 배열들의 모든 인자들을 접근할 수 있다.
@@ -517,6 +517,95 @@ function problem11(input) {
   return multipleList.reduce((prev, cur) => Math.max(prev, cur));
 }
 
+/**
+500개 이상의 약수를 갖는 가장 작은 삼각수는?
+
+1부터 n까지의 자연수를 차례로 더하여 구해진 값을 삼각수라고 합니다.
+예를 들어 7번째 삼각수는 1 + 2 + 3 + 4 + 5 + 6 + 7 = 28이 됩니다.
+이런 식으로 삼각수를 구해 나가면 다음과 같습니다.
+
+1, 3, 6, 10, 15, 21, 28, 36, 45, 55, ...
+이 삼각수들의 약수를 구해 봅시다.
+
+1: 1
+3: 1, 3
+6: 1, 2, 3, 6
+10: 1, 2, 5, 10
+15: 1, 3, 5, 15
+21: 1, 3, 7, 21
+28: 1, 2, 4, 7, 14, 28
+위에서 보듯이, 5개 이상의 약수를 갖는 첫번째 삼각수는 28입니다.
+
+그러면 500개 이상의 약수를 갖는 가장 작은 삼각수는 얼마입니까?
+
+풀이
+
+초기 풀이
+1. 단순히 값을 계속 올려서 약수의 갯수가 500개인 수를 찾으려고 함
+2. 시간이 너무 오래 걸리고 도저히 끝나지 않아 다른 방법 물색
+
+최종 풀이
+1. 삼각수 공식 N = n * (n+1) / 2을(시그마 공식) 활용하여 해결
+2. 약수 개수 구하는 건 속도를 위해서 대상의 루트까지 루프
+3. 모든 숫자의 약수는 자기 자신의 절반을 넘지 못함
+4. 따라서 sqrt(제곱근)을 사용하여 시간을 줄였음.
+ */
+function ploblem12() {
+  // let value = 1;
+  // let sum = 0;
+  // function divisors(integer) {
+  //   let arr = [];
+  //   for (let i = 1; i <= integer; i++) {
+  //     if (integer % i == 0) {
+  //       arr.push(i);
+  //     }
+  //   }
+  //   return arr;
+  // }
+  // while (true) {
+  //   sum += value;
+  //   let result = divisors(sum);
+  //   console.log(result)
+  //   if (result.length >= 500) {
+  //     break;
+  //   }
+  //   value++;
+  // }
+  // return sum;
+
+  let n, sum, count;
+  n = 1;
+
+  function cnt_div(n) {
+    let cnt;
+    let max_length;
+
+    cnt = 0;
+    max_length = Math.sqrt(n);
+
+    for (let i = 0; i < max_length; i++) {
+      if (n % i === 0) {
+        cnt += 2;
+      }
+    }
+    if (max_length * max_length === n) {
+      cnt -= 1;
+    }
+    return cnt;
+  }
+
+  while (true) {
+    sum = n * (n + 1) / 2;
+    count = cnt_div(sum);
+    if (count >= 500) {
+      return sum;
+    }
+    n++;
+  }
+
+
+}
+
 let startTime = new Date().getTime();
 
 // const result = problem2(4000000);
@@ -528,7 +617,8 @@ let startTime = new Date().getTime();
 // const result = problem8();
 // const result = problem9(1000);
 // const result = problem10(2000000);
-const result = problem11(4);
+// const result = problem11(4);
+const result = ploblem12();
 
 let elapsed = new Date().getTime() - startTime;
 console.log(elapsed / 1000); // 1000ms -> 1sec
