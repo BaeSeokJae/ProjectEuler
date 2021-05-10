@@ -96,16 +96,23 @@ function problem3(arg) {
  * 세 자리 수를 곱해 만들 수 있는 가장 큰 대칭수는 얼마입니까?
  *
  * 풀이
- *
+ * 1. 대칭수 중 가장 큰 숫자를 찾아야함
+ * 2. 따라서 999 * 999 부터 감소하며 찾아가는게 제일 빠름
+ * 3. 대칭수는 reverse를 사용하여 생성후 비교
+ * 4. 처음 비교시 일치하는 결과를 최종 리턴 변수에 저장
+ * 5. 반복문이 돌면서 일치하는 값이 계속 발생함
+ * 6. 이러한 일치값을 최종 변수와 비교하고, 비교 시 최종 값 보다 작게되면
  */
 function problem4() {
+  let sum = 0;
+  let reverseSum;
   let maxSum = 0;
-  for (let i = 1000; i > 100; i--) {
-    for (let j = 1000; j > 100; j--) {
-      maxSum = i * j;
-      let reverseMaxSum = maxSum.toString().split("").reverse("").join("");
-      if (maxSum.toString() === reverseMaxSum) {
-        return (maxSum = parseInt(maxSum));
+  for (let i = 999; i > 100; i--) {
+    for (let j = 999; j > 100; j--) {
+      sum = i * j;
+      reverseSum = sum.toString().split("").reverse("").join("");
+      if (sum.toString() === reverseSum) {
+        if (sum > maxSum) return (maxSum = sum);
       }
     }
   }
