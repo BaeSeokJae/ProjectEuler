@@ -1038,9 +1038,32 @@ function problem21() {
   }
   return result;
 }
+/**
+영문 이름 점수 합계 구하기
+
+여기 5천개 이상의 영문 이름들이 들어있는 46KB짜리 텍스트 파일 names.txt 이 있습니다 (우클릭해서 다운로드 받으세요).
+이제 각 이름에 대해서 아래와 같은 방법으로 점수를 매기고자 합니다.
+
+먼저 모든 이름을 알파벳 순으로 정렬합니다.
+각 이름에 대해서, 그 이름을 이루는 알파벳에 해당하는 수(A=1, B=2, ..., Z=26)를 모두 더합니다.
+여기에 이 이름의 순번을 곱합니다.
+예를 들어 "COLIN"의 경우, 알파벳에 해당하는 수는 3, 15, 12, 9, 14이므로 합이 53, 그리고 정렬했을 때 938번째에 오므로 최종 점수는 938 × 53 = 49714가 됩니다.
+
+names.txt에 들어있는 모든 이름의 점수를 계산해서 더하면 얼마입니까?
+
+풀이
+
+1. name.txt 문서 fs모듈로 read
+2. 알파벳에 해당하는 점수 할당한 객체 생성
+3. 읽어온 txt문서를 정렬 및 배열화
+4. 배열 길이만큼 반복문 실행
+5. 알파벳에 해당하는 수의 합과 해당 위치의 수를 곱셈
+6. 결과에 덧셈 반복
+ */
 
 function problem22() {
   const txt = fs.readFileSync("name.txt");
+  let result = 0;
   const alphabet = {
     "A": 1,
     "B": 2,
@@ -1069,15 +1092,20 @@ function problem22() {
     "Y": 25,
     "Z": 26,
   }
-  nameArr = txt.toString().split(',').sort();
-  let result = 0;
-  let sum = 0;
+  
+  nameArr = txt.toString().split(',').sort(function(a, b)  {
+    if(a > b) return 1;
+    if(a === b) return 0;
+    if(a < b) return -1;
+  });
+
   for (let i = 0; i < nameArr.length; i++) {
+    let namesum = 0;
     splitName = nameArr[i].split('"')[1].split('');
     for (let ele of splitName) {
-      sum += alphabet[ele];
+      namesum += alphabet[ele];
     }
-    result += (sum * i);
+    result += (namesum * (i+1));
   }
   return result;
 }
