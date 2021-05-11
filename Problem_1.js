@@ -1,3 +1,4 @@
+const fs = require('fs');
 /**
 1000보다 작은 자연수 중에서 3 또는 5의 배수를 모두 더하면?
 10보다 작은 자연수 중에서 3 또는 5의 배수는 3, 5, 6, 9 이고, 이것을 모두 더하면 23입니다.
@@ -362,41 +363,6 @@ function problem9(arg) {
  */
 
 function problem10(arg) {
-  let sum = 0;
-
-  // function isPrime(n) {
-  //   // 1이하일 경우엔 소수가 아닙니다.
-  //   if (n <= 1) return false;
-
-  //   // 2와 3일 경우엔 소수 입니다.
-  //   if (n === 2 || n === 3) return true;
-
-  //   // 2로 나눴을 때 나머지가 0일 경우엔 소수가 아닙니다.
-  //   // 이 말인 즉슨 짝수는 다 소수가 아닙니다.
-  //   if (n % 2 === 0) return false;
-
-  //   // 최대 n - 1까지 돌려줍니다.
-  //   let divisor = 3;
-  //   while (n > divisor) {
-  //     // 무엇이라도 0으로 떨어진다면 소수가 아닙니다.
-  //     if (n % divisor === 0) return false;
-
-  //     // 짝수일 경우를 제외한 홀수일 경우를 판단
-  //     divisor += 2;
-  //   }
-
-  //   // 모든 조건을 통과했을 경우 소수로 인정받습니다.
-  //   return true;
-  // }
-
-  // for (let i = 2; i <= arg; i++) {
-  //   if (isPrime(i)) {
-  //     sum += i;
-  //   }
-  // }
-  // console.log(startTime, elapsed);
-  // return sum;
-
   const arr = [];
 
   for (let i = 0; i <= arg; i += 1) {
@@ -788,7 +754,7 @@ function problem14(arg) {
 
 풀이
 
-1. 중복순열을 공식을 통해 풀이 가능
+1. 중복집합순열을 공식을 통해 풀이 가능
 2. 순열(順列, permutation)은 서로 다른 n 개의 원소 중에서 r 개()를 뽑아서 한 줄로 세우는 경우의 수이다.
  */
 function problem15() {
@@ -1034,6 +1000,88 @@ function problem20(arg) {
   return facToString;
 }
 
+/**
+10000 이하 모든 친화수(우애수)의 합은?
+
+n의 약수들 중에서 자신을 제외한 것의 합을 d(n)으로 정의했을 때,
+서로 다른 두 정수 a, b에 대하여 d(a) = b 이고 d(b) = a 이면
+a, b는 친화쌍이라 하고 a와 b를 각각 친화수(우애수)라고 합니다.
+
+예를 들어 220의 약수는 자신을 제외하면 1, 2, 4, 5, 10, 11, 20, 22, 44, 55, 110 이므로 그 합은 d(220) = 284 입니다.
+또 284의 약수는 자신을 제외하면 1, 2, 4, 71, 142 이므로 d(284) = 220 입니다.
+따라서 220과 284는 친화쌍이 됩니다.
+
+10000 이하의 친화수들을 모두 찾아서 그 합을 구하세요.
+
+풀이
+
+1. 약수의 합을 구하는 함수 생성
+2. 우애수를 구하는 조건에 맞춰 함수 실행
+ */
+
+function problem21() {
+  let result = 0;
+  function divisorSum(arg) {
+    let sum = 0;
+    for (let i = 1; i < arg; i++) {
+      if (arg % i === 0) {
+        sum += i;
+      }
+    }
+    return sum;
+  }
+  for (let b = 1; b <= 10000; b++) {
+    let a = divisorSum(b)
+    if (b === divisorSum(a) && a !== b) {
+      result += b;
+    }
+  }
+  return result;
+}
+
+function problem22() {
+  const txt = fs.readFileSync("name.txt");
+  const alphabet = {
+    "A": 1,
+    "B": 2,
+    "C": 3,
+    "D": 4,
+    "E": 5,
+    "F": 6,
+    "G": 7,
+    "H": 8,
+    "I": 9,
+    "J": 10,
+    "K": 11,
+    "L": 12,
+    "M": 13,
+    "N": 14,
+    "O": 15,
+    "P": 16,
+    "Q": 17,
+    "R": 18,
+    "S": 19,
+    "T": 20,
+    "U": 21,
+    "V": 22,
+    "W": 23,
+    "X": 24,
+    "Y": 25,
+    "Z": 26,
+  }
+  nameArr = txt.toString().split(',').sort();
+  let result = 0;
+  let sum = 0;
+  for (let i = 0; i < nameArr.length; i++) {
+    splitName = nameArr[i].split('"')[1].split('');
+    for (let ele of splitName) {
+      sum += alphabet[ele];
+    }
+    result += (sum * i);
+  }
+  return result;
+}
+
 let startTime = new Date().getTime();
 
 // const result = problem2(4000000);
@@ -1054,7 +1102,9 @@ let startTime = new Date().getTime();
 // const result = problem17();
 // const result = problem18();
 // const result = problem19();
-const result = problem20(100);
+// const result = problem20(100);
+// const result = problem21();
+const result = problem22();
 
 let elapsed = new Date().getTime() - startTime;
 console.log("타임 :", elapsed / 1000); // 1000ms -> 1sec
